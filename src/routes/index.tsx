@@ -99,9 +99,9 @@ function Landing() {
           alt="A woman sitting on a hilltop watching the sunrise over misty mountains"
           width={1600}
           height={912}
-          className="h-[62vh] min-h-[380px] w-full object-cover"
+          className="h-[76vh] max-h-[620px] min-h-[420px] w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/45 to-transparent" />
         <div className="absolute inset-0 flex items-center">
           <div className="mx-auto w-full max-w-7xl px-5">
             <div className="max-w-lg">
