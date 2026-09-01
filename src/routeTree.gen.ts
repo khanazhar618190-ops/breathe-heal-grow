@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as TherapistRouteImport } from './routes/therapist'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardJournalRouteImport } from './routes/dashboard.journal'
 import { Route as DashboardProgressRouteImport } from './routes/dashboard.progress'
@@ -45,6 +46,11 @@ const TherapistRoute = TherapistRouteImport.update({
   id: '/therapist',
   path: '/therapist',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
@@ -79,7 +85,7 @@ const TherapistScheduleRoute = TherapistScheduleRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/therapist': typeof TherapistRouteWithChildren
@@ -87,24 +93,25 @@ export interface FileRoutesByFullPath {
   '/dashboard/progress': typeof DashboardProgressRoute
   '/therapist/patients': typeof TherapistPatientsRoute
   '/therapist/schedule': typeof TherapistScheduleRoute
+  '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/therapist/': typeof TherapistIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/therapist/patients': typeof TherapistPatientsRoute
   '/therapist/schedule': typeof TherapistScheduleRoute
+  '/admin': typeof AdminIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/therapist': typeof TherapistIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/therapist': typeof TherapistRouteWithChildren
@@ -112,6 +119,7 @@ export interface FileRoutesById {
   '/dashboard/progress': typeof DashboardProgressRoute
   '/therapist/patients': typeof TherapistPatientsRoute
   '/therapist/schedule': typeof TherapistScheduleRoute
+  '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/therapist/': typeof TherapistIndexRoute
 }
@@ -127,17 +135,18 @@ export interface FileRouteTypes {
     | '/dashboard/progress'
     | '/therapist/patients'
     | '/therapist/schedule'
+    | '/admin/'
     | '/dashboard/'
     | '/therapist/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/auth'
     | '/dashboard/journal'
     | '/dashboard/progress'
     | '/therapist/patients'
     | '/therapist/schedule'
+    | '/admin'
     | '/dashboard'
     | '/therapist'
   id:
@@ -151,13 +160,14 @@ export interface FileRouteTypes {
     | '/dashboard/progress'
     | '/therapist/patients'
     | '/therapist/schedule'
+    | '/admin/'
     | '/dashboard/'
     | '/therapist/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   TherapistRoute: typeof TherapistRouteWithChildren
@@ -199,6 +209,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/therapist'
       preLoaderRoute: typeof TherapistRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/dashboard/': {
       id: '/dashboard/'
@@ -245,6 +262,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface DashboardRouteChildren {
   DashboardJournalRoute: typeof DashboardJournalRoute
   DashboardProgressRoute: typeof DashboardProgressRoute
@@ -279,7 +306,7 @@ const TherapistRouteWithChildren = TherapistRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRouteWithChildren,
   TherapistRoute: TherapistRouteWithChildren,
