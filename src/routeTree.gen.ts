@@ -10,15 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as TherapistRouteImport } from './routes/therapist'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardJournalRouteImport } from './routes/dashboard.journal'
 import { Route as DashboardProgressRouteImport } from './routes/dashboard.progress'
+import { Route as TherapistIndexRouteImport } from './routes/therapist.index'
+import { Route as TherapistPatientsRouteImport } from './routes/therapist.patients'
+import { Route as TherapistScheduleRouteImport } from './routes/therapist.schedule'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -30,6 +42,21 @@ const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
+} as any)
+const TherapistRoute = TherapistRouteImport.update({
+  id: '/therapist',
+  path: '/therapist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
@@ -46,57 +73,116 @@ const DashboardProgressRoute = DashboardProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => DashboardRoute,
 } as any)
+const TherapistIndexRoute = TherapistIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TherapistRoute,
+} as any)
+const TherapistPatientsRoute = TherapistPatientsRouteImport.update({
+  id: '/patients',
+  path: '/patients',
+  getParentRoute: () => TherapistRoute,
+} as any)
+const TherapistScheduleRoute = TherapistScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => TherapistRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/therapist': typeof TherapistRouteWithChildren
+  '/admin/users': typeof AdminUsersRoute
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
+  '/therapist/patients': typeof TherapistPatientsRoute
+  '/therapist/schedule': typeof TherapistScheduleRoute
+  '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/therapist/': typeof TherapistIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/admin/users': typeof AdminUsersRoute
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
+  '/therapist/patients': typeof TherapistPatientsRoute
+  '/therapist/schedule': typeof TherapistScheduleRoute
+  '/admin': typeof AdminIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/therapist': typeof TherapistIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/therapist': typeof TherapistRouteWithChildren
+  '/admin/users': typeof AdminUsersRoute
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
+  '/therapist/patients': typeof TherapistPatientsRoute
+  '/therapist/schedule': typeof TherapistScheduleRoute
+  '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/therapist/': typeof TherapistIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/auth'
     | '/dashboard'
+    | '/therapist'
+    | '/admin/users'
     | '/dashboard/journal'
     | '/dashboard/progress'
+    | '/therapist/patients'
+    | '/therapist/schedule'
+    | '/admin/'
     | '/dashboard/'
+    | '/therapist/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/auth' | '/dashboard/journal' | '/dashboard/progress' | '/dashboard'
+    | '/'
+    | '/auth'
+    | '/admin/users'
+    | '/dashboard/journal'
+    | '/dashboard/progress'
+    | '/therapist/patients'
+    | '/therapist/schedule'
+    | '/admin'
+    | '/dashboard'
+    | '/therapist'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/auth'
     | '/dashboard'
+    | '/therapist'
+    | '/admin/users'
     | '/dashboard/journal'
     | '/dashboard/progress'
+    | '/therapist/patients'
+    | '/therapist/schedule'
+    | '/admin/'
     | '/dashboard/'
+    | '/therapist/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRouteWithChildren
+  TherapistRoute: typeof TherapistRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -106,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -121,6 +214,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/therapist': {
+      id: '/therapist'
+      path: '/therapist'
+      fullPath: '/therapist'
+      preLoaderRoute: typeof TherapistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/dashboard/': {
       id: '/dashboard/'
@@ -143,8 +257,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProgressRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/therapist/': {
+      id: '/therapist/'
+      path: '/'
+      fullPath: '/therapist/'
+      preLoaderRoute: typeof TherapistIndexRouteImport
+      parentRoute: typeof TherapistRoute
+    }
+    '/therapist/patients': {
+      id: '/therapist/patients'
+      path: '/patients'
+      fullPath: '/therapist/patients'
+      preLoaderRoute: typeof TherapistPatientsRouteImport
+      parentRoute: typeof TherapistRoute
+    }
+    '/therapist/schedule': {
+      id: '/therapist/schedule'
+      path: '/schedule'
+      fullPath: '/therapist/schedule'
+      preLoaderRoute: typeof TherapistScheduleRouteImport
+      parentRoute: typeof TherapistRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface DashboardRouteChildren {
   DashboardJournalRoute: typeof DashboardJournalRoute
@@ -162,10 +309,28 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
   DashboardRouteChildren,
 )
 
+interface TherapistRouteChildren {
+  TherapistPatientsRoute: typeof TherapistPatientsRoute
+  TherapistScheduleRoute: typeof TherapistScheduleRoute
+  TherapistIndexRoute: typeof TherapistIndexRoute
+}
+
+const TherapistRouteChildren: TherapistRouteChildren = {
+  TherapistPatientsRoute: TherapistPatientsRoute,
+  TherapistScheduleRoute: TherapistScheduleRoute,
+  TherapistIndexRoute: TherapistIndexRoute,
+}
+
+const TherapistRouteWithChildren = TherapistRoute._addFileChildren(
+  TherapistRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRouteWithChildren,
+  TherapistRoute: TherapistRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
