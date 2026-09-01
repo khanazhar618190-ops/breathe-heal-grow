@@ -58,6 +58,7 @@ function Field({
 
 function AuthPage() {
   const [mode, setMode] = useState<"register" | "login">("register");
+  const navigate = useNavigate();
   const faq = faqs[0]!;
 
   return (
