@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronDown, Minus } from "lucide-react";
 
@@ -58,6 +58,7 @@ function Field({
 
 function AuthPage() {
   const [mode, setMode] = useState<"register" | "login">("register");
+  const navigate = useNavigate();
   const faq = faqs[0]!;
 
   return (
@@ -118,7 +119,13 @@ function AuthPage() {
               </button>
             </p>
 
-            <form className="mt-7 space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form
+              className="mt-7 space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                navigate({ to: "/dashboard" });
+              }}
+            >
               {mode === "register" && (
                 <label className="relative block">
                   <select className="field-input appearance-none pt-4 pb-4">
