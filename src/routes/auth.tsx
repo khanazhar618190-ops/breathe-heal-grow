@@ -119,7 +119,13 @@ function AuthPage() {
               </button>
             </p>
 
-            <form className="mt-7 space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form
+              className="mt-7 space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                navigate({ to: "/dashboard" });
+              }}
+            >
               {mode === "register" && (
                 <label className="relative block">
                   <select className="field-input appearance-none pt-4 pb-4">
