@@ -16,6 +16,7 @@ import { Route as TherapistRouteImport } from './routes/therapist'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardJournalRouteImport } from './routes/dashboard.journal'
 import { Route as DashboardProgressRouteImport } from './routes/dashboard.progress'
+import { Route as TherapistIndexRouteImport } from './routes/therapist.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,33 +53,40 @@ const DashboardProgressRoute = DashboardProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => DashboardRoute,
 } as any)
+const TherapistIndexRoute = TherapistIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TherapistRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
-  '/therapist': typeof TherapistRoute
+  '/therapist': typeof TherapistRouteWithChildren
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/therapist/': typeof TherapistIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/therapist': typeof TherapistRoute
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/therapist': typeof TherapistIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
-  '/therapist': typeof TherapistRoute
+  '/therapist': typeof TherapistRouteWithChildren
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/therapist/': typeof TherapistIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,14 +98,15 @@ export interface FileRouteTypes {
     | '/dashboard/journal'
     | '/dashboard/progress'
     | '/dashboard/'
+    | '/therapist/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/therapist'
     | '/dashboard/journal'
     | '/dashboard/progress'
     | '/dashboard'
+    | '/therapist'
   id:
     | '__root__'
     | '/'
@@ -107,13 +116,14 @@ export interface FileRouteTypes {
     | '/dashboard/journal'
     | '/dashboard/progress'
     | '/dashboard/'
+    | '/therapist/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRouteWithChildren
-  TherapistRoute: typeof TherapistRoute
+  TherapistRoute: typeof TherapistRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -167,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProgressRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/therapist/': {
+      id: '/therapist/'
+      path: '/'
+      fullPath: '/therapist/'
+      preLoaderRoute: typeof TherapistIndexRouteImport
+      parentRoute: typeof TherapistRoute
+    }
   }
 }
 
@@ -186,11 +203,23 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
   DashboardRouteChildren,
 )
 
+interface TherapistRouteChildren {
+  TherapistIndexRoute: typeof TherapistIndexRoute
+}
+
+const TherapistRouteChildren: TherapistRouteChildren = {
+  TherapistIndexRoute: TherapistIndexRoute,
+}
+
+const TherapistRouteWithChildren = TherapistRoute._addFileChildren(
+  TherapistRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRouteWithChildren,
-  TherapistRoute: TherapistRoute,
+  TherapistRoute: TherapistRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
