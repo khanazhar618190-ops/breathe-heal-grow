@@ -147,74 +147,78 @@ function ChatPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <header>
-        <p className="eyebrow text-teal">Private · nothing is shared without your consent</p>
-        <h1 className="mt-3 text-3xl font-bold text-teal sm:text-4xl">Talk to Saathi</h1>
-        <p className="mt-3 max-w-xl text-sm leading-relaxed text-foreground/75">
-          A gentle companion for the in-between moments. Saathi is not a therapist — for urgent help,
-          call a helpline.
+    <div className="flex h-full min-h-0 lg:grid lg:grid-cols-[264px_1fr]">
+      {/* Threads */}
+      <aside className="hidden min-h-0 flex-col border-r border-border/70 bg-mint/25 p-4 lg:flex">
+        <button type="button" onClick={newThread} className="btn-base btn-coral w-full">
+          <Plus className="h-3.5 w-3.5" aria-hidden />
+          New chat
+        </button>
+        <ul className="mt-4 min-h-0 flex-1 space-y-1 overflow-y-auto">
+          {threads.map((t) => (
+            <li key={t.id}>
+              <button
+                type="button"
+                onClick={() => setActiveId(t.id)}
+                className={`w-full rounded-md px-3 py-2 text-left transition-colors ${
+                  t.id === active.id ? "bg-card text-teal shadow-soft" : "text-foreground/75 hover:bg-card/70"
+                }`}
+              >
+                <span className="flex items-center gap-2 text-[0.8rem] font-medium">
+                  <MessageCircle className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                  <span className="truncate">{t.title}</span>
+                </span>
+                <span className="mt-0.5 block pl-5 text-[0.65rem] text-muted-foreground">{t.updated}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 border-t border-border/60 pt-3 text-[0.65rem] leading-relaxed text-muted-foreground">
+          Private · nothing is shared without your consent.
         </p>
-      </header>
+      </aside>
 
-      <div className="grid gap-5 lg:grid-cols-[240px_1fr]">
-        {/* Threads */}
-        <aside className="rounded-lg border border-border bg-card p-4 shadow-soft">
-          <button type="button" onClick={newThread} className="btn-base btn-coral w-full">
-            <Plus className="h-3.5 w-3.5" aria-hidden />
-            New chat
-          </button>
-          <ul className="mt-4 space-y-1">
-            {threads.map((t) => (
-              <li key={t.id}>
-                <button
-                  type="button"
-                  onClick={() => setActiveId(t.id)}
-                  className={`w-full rounded-md px-3 py-2 text-left transition-colors ${
-                    t.id === active.id ? "bg-mint/70 text-teal" : "text-foreground/75 hover:bg-mint/40"
-                  }`}
-                >
-                  <span className="flex items-center gap-2 text-[0.8rem] font-medium">
-                    <MessageCircle className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                    <span className="truncate">{t.title}</span>
-                  </span>
-                  <span className="mt-0.5 block pl-5 text-[0.65rem] text-muted-foreground">{t.updated}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </aside>
-
-        {/* Conversation */}
-        <section className="flex min-h-[32rem] flex-col rounded-lg border border-border bg-card shadow-soft">
-          <div className="flex items-center gap-3 border-b border-border/70 px-6 py-4">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-mint">
-              <Sprout className="h-4 w-4 text-teal" aria-hidden />
-            </span>
-            <div>
-              <p className="text-sm font-bold text-teal">Saathi</p>
-              <p className="text-[0.68rem] text-muted-foreground">Companion · always here</p>
-            </div>
-            <button type="button" className="btn-base btn-outline-coral ml-auto">
-              <Phone className="h-3.5 w-3.5" aria-hidden />
-              Helpline
-            </button>
+      {/* Conversation */}
+      <section className="flex min-h-0 flex-1 flex-col bg-background">
+        <div className="flex items-center gap-3 border-b border-border/70 bg-card/60 px-5 py-3 backdrop-blur sm:px-8">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-mint">
+            <Sprout className="h-5 w-5 text-teal" aria-hidden />
+          </span>
+          <div>
+            <p className="text-sm font-bold text-teal">Saathi</p>
+            <p className="text-[0.68rem] text-muted-foreground">Companion · always here</p>
           </div>
+          <button type="button" onClick={newThread} className="btn-base btn-outline-coral ml-auto lg:hidden">
+            <Plus className="h-3.5 w-3.5" aria-hidden />
+            New
+          </button>
+          <button type="button" className="btn-base btn-outline-coral ml-2 lg:ml-auto">
+            <Phone className="h-3.5 w-3.5" aria-hidden />
+            Helpline
+          </button>
+        </div>
 
-          <div className="flex-1 space-y-5 overflow-y-auto px-6 py-6">
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-8 sm:px-8">
+          <div className="mx-auto flex max-w-2xl flex-col gap-6">
             {active.messages.length === 0 && !typing && (
-              <div className="rounded-lg bg-mint/50 p-6">
-                <p className="font-display text-lg font-bold text-teal">What's on your mind today?</p>
-                <p className="mt-2 text-sm text-foreground/75">
-                  Start anywhere — a feeling, a sentence, or one of these:
+              <div className="py-10 text-center">
+                <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-mint">
+                  <Sprout className="h-6 w-6 text-teal" aria-hidden />
+                </span>
+                <h1 className="mt-5 font-display text-2xl font-bold text-teal sm:text-3xl">
+                  What's on your mind today?
+                </h1>
+                <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-foreground/75">
+                  Start anywhere — a feeling, a sentence, or one of these. Saathi is not a therapist;
+                  for urgent help, call a helpline.
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-6 flex flex-wrap justify-center gap-2">
                   {suggestions.map((s) => (
                     <button
                       key={s}
                       type="button"
                       onClick={() => send(s)}
-                      className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-foreground/80 transition-colors hover:border-coral hover:text-coral"
+                      className="rounded-full border border-border bg-card px-3.5 py-2 text-xs text-foreground/80 transition-colors hover:border-coral hover:text-coral"
                     >
                       {s}
                     </button>
@@ -235,7 +239,7 @@ function ChatPage() {
                   <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-mint">
                     <Sprout className="h-3.5 w-3.5 text-teal" aria-hidden />
                   </span>
-                  <p className="max-w-[85%] text-sm leading-relaxed text-foreground/85">{m.text}</p>
+                  <p className="max-w-[85%] text-[0.95rem] leading-relaxed text-foreground/85">{m.text}</p>
                 </div>
               ),
             )}
@@ -250,14 +254,16 @@ function ChatPage() {
             )}
             <div ref={endRef} />
           </div>
+        </div>
 
-          <form
-            className="border-t border-border/70 px-6 py-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              send(draft);
-            }}
-          >
+        <form
+          className="border-t border-border/70 bg-card/60 px-5 py-4 sm:px-8"
+          onSubmit={(e) => {
+            e.preventDefault();
+            send(draft);
+          }}
+        >
+          <div className="mx-auto max-w-2xl">
             <div className="flex items-end gap-3">
               <textarea
                 ref={inputRef}
@@ -286,9 +292,9 @@ function ChatPage() {
             <p className="mt-2 text-[0.65rem] text-muted-foreground">
               This is a supportive companion, not a crisis service or medical advice.
             </p>
-          </form>
-        </section>
-      </div>
+          </div>
+        </form>
+      </section>
     </div>
   );
 }
