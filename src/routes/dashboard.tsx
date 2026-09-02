@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { LayoutGrid, NotebookPen, LineChart, LogOut, Bell } from "lucide-react";
+import { LayoutGrid, NotebookPen, LineChart, LogOut, Bell, MessageCircle } from "lucide-react";
 
 import { Wordmark } from "@/components/site-header";
 
@@ -9,6 +9,7 @@ export const Route = createFileRoute("/dashboard")({
 
 const navLinks = [
   { to: "/dashboard", label: "Home", icon: LayoutGrid, exact: true },
+  { to: "/dashboard/chat", label: "Saathi", icon: MessageCircle, exact: false },
   { to: "/dashboard/journal", label: "Journal", icon: NotebookPen, exact: false },
   { to: "/dashboard/progress", label: "Progress", icon: LineChart, exact: false },
 ] as const;

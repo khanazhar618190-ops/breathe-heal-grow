@@ -56,8 +56,17 @@ function Field({
   );
 }
 
+type RoleValue = "patient" | "therapist" | "admin";
+
+const roleOptions = [
+  { value: "patient", label: "Patient", to: "/dashboard" },
+  { value: "therapist", label: "Therapist", to: "/therapist" },
+  { value: "admin", label: "Admin", to: "/admin" },
+] as const satisfies readonly { value: RoleValue; label: string; to: string }[];
+
 function AuthPage() {
   const [mode, setMode] = useState<"register" | "login">("register");
+  const [role, setRole] = useState<RoleValue>("patient");
   const navigate = useNavigate();
   const faq = faqs[0]!;
 
@@ -119,11 +128,34 @@ function AuthPage() {
               </button>
             </p>
 
+            <div className="mt-7 rounded-lg bg-mint/50 p-5">
+              <p className="text-sm font-bold text-teal">Continue as</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Demo mode — pick the dashboard you want to explore.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {roleOptions.map((r) => (
+                  <button
+                    key={r.value}
+                    type="button"
+                    onClick={() => setRole(r.value)}
+                    className={`rounded-full border px-4 py-2 text-xs font-semibold transition-colors ${
+                      role === r.value
+                        ? "border-coral bg-coral text-coral-foreground"
+                        : "border-border bg-card text-foreground/80 hover:border-coral"
+                    }`}
+                  >
+                    {r.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <form
-              className="mt-7 space-y-4"
+              className="mt-6 space-y-4"
               onSubmit={(e) => {
                 e.preventDefault();
-                navigate({ to: "/dashboard" });
+                navigate({ to: roleOptions.find((r) => r.value === role)!.to });
               }}
             >
               {mode === "register" && (

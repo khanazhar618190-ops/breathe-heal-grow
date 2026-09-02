@@ -15,8 +15,10 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as TherapistRouteImport } from './routes/therapist'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminModerationRouteImport } from './routes/admin.moderation'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as DashboardChatRouteImport } from './routes/dashboard.chat'
 import { Route as DashboardJournalRouteImport } from './routes/dashboard.journal'
 import { Route as DashboardProgressRouteImport } from './routes/dashboard.progress'
 import { Route as TherapistIndexRouteImport } from './routes/therapist.index'
@@ -53,6 +55,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminModerationRoute = AdminModerationRouteImport.update({
+  id: '/moderation',
+  path: '/moderation',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -61,6 +68,11 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardChatRoute = DashboardChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardJournalRoute = DashboardJournalRouteImport.update({
@@ -95,7 +107,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/therapist': typeof TherapistRouteWithChildren
+  '/admin/moderation': typeof AdminModerationRoute
   '/admin/users': typeof AdminUsersRoute
+  '/dashboard/chat': typeof DashboardChatRoute
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/therapist/patients': typeof TherapistPatientsRoute
@@ -107,7 +121,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/admin/moderation': typeof AdminModerationRoute
   '/admin/users': typeof AdminUsersRoute
+  '/dashboard/chat': typeof DashboardChatRoute
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/therapist/patients': typeof TherapistPatientsRoute
@@ -123,7 +139,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/therapist': typeof TherapistRouteWithChildren
+  '/admin/moderation': typeof AdminModerationRoute
   '/admin/users': typeof AdminUsersRoute
+  '/dashboard/chat': typeof DashboardChatRoute
   '/dashboard/journal': typeof DashboardJournalRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/therapist/patients': typeof TherapistPatientsRoute
@@ -140,7 +158,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/therapist'
+    | '/admin/moderation'
     | '/admin/users'
+    | '/dashboard/chat'
     | '/dashboard/journal'
     | '/dashboard/progress'
     | '/therapist/patients'
@@ -152,7 +172,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/admin/moderation'
     | '/admin/users'
+    | '/dashboard/chat'
     | '/dashboard/journal'
     | '/dashboard/progress'
     | '/therapist/patients'
@@ -167,7 +189,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/therapist'
+    | '/admin/moderation'
     | '/admin/users'
+    | '/dashboard/chat'
     | '/dashboard/journal'
     | '/dashboard/progress'
     | '/therapist/patients'
@@ -229,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/moderation': {
+      id: '/admin/moderation'
+      path: '/moderation'
+      fullPath: '/admin/moderation'
+      preLoaderRoute: typeof AdminModerationRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/users': {
       id: '/admin/users'
       path: '/users'
@@ -241,6 +272,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/chat': {
+      id: '/dashboard/chat'
+      path: '/chat'
+      fullPath: '/dashboard/chat'
+      preLoaderRoute: typeof DashboardChatRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/journal': {
@@ -282,11 +320,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminModerationRoute: typeof AdminModerationRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminModerationRoute: AdminModerationRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
@@ -294,12 +334,14 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface DashboardRouteChildren {
+  DashboardChatRoute: typeof DashboardChatRoute
   DashboardJournalRoute: typeof DashboardJournalRoute
   DashboardProgressRoute: typeof DashboardProgressRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardChatRoute: DashboardChatRoute,
   DashboardJournalRoute: DashboardJournalRoute,
   DashboardProgressRoute: DashboardProgressRoute,
   DashboardIndexRoute: DashboardIndexRoute,
