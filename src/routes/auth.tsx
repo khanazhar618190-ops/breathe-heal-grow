@@ -58,6 +58,7 @@ function Field({
 
 function AuthPage() {
   const [mode, setMode] = useState<"register" | "login">("register");
+  const [role, setRole] = useState<RoleValue>("patient");
   const navigate = useNavigate();
   const faq = faqs[0]!;
 
