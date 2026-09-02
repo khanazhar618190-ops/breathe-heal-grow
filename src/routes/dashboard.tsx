@@ -9,6 +9,7 @@ export const Route = createFileRoute("/dashboard")({
 
 const navLinks = [
   { to: "/dashboard", label: "Home", icon: LayoutGrid, exact: true },
+  { to: "/dashboard/chat", label: "Saathi", icon: MessageCircle, exact: false },
   { to: "/dashboard/journal", label: "Journal", icon: NotebookPen, exact: false },
   { to: "/dashboard/progress", label: "Progress", icon: LineChart, exact: false },
 ] as const;
