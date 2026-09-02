@@ -56,6 +56,14 @@ function Field({
   );
 }
 
+type RoleValue = "patient" | "therapist" | "admin";
+
+const roleOptions = [
+  { value: "patient", label: "Patient", to: "/dashboard" },
+  { value: "therapist", label: "Therapist", to: "/therapist" },
+  { value: "admin", label: "Admin", to: "/admin" },
+] as const satisfies readonly { value: RoleValue; label: string; to: string }[];
+
 function AuthPage() {
   const [mode, setMode] = useState<"register" | "login">("register");
   const [role, setRole] = useState<RoleValue>("patient");
