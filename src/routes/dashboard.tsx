@@ -51,13 +51,15 @@ function DashboardLayout() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-5 py-9">
+      <main className={immersive ? "min-h-0 flex-1" : "mx-auto max-w-6xl px-5 py-9"}>
         <Outlet />
       </main>
 
-      <footer className="bg-mint/50 py-5 text-center text-[0.72rem] text-teal">
-        You are not alone. If you need urgent help, call a helpline any time.
-      </footer>
+      {!immersive && (
+        <footer className="bg-mint/50 py-5 text-center text-[0.72rem] text-teal">
+          You are not alone. If you need urgent help, call a helpline any time.
+        </footer>
+      )}
     </div>
   );
 }
