@@ -51,6 +51,7 @@ function DashboardLayout() {
           </div>
         </div>
       </header>
+      )}
 
       <main className={immersive ? "min-h-0 flex-1" : "mx-auto max-w-6xl px-5 py-9"}>
         <Outlet />
