@@ -21,6 +21,7 @@ function DashboardLayout() {
 
   return (
     <div className={immersive ? "flex h-dvh flex-col overflow-hidden bg-background" : "min-h-screen bg-background"}>
+      {!immersive && (
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-5 px-5 py-3">
           <Wordmark />
@@ -50,6 +51,7 @@ function DashboardLayout() {
           </div>
         </div>
       </header>
+      )}
 
       <main className={immersive ? "min-h-0 flex-1" : "mx-auto max-w-6xl px-5 py-9"}>
         <Outlet />
